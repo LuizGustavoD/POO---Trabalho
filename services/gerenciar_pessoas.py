@@ -11,6 +11,12 @@ class GerenciarAlunos:
 
     def listar_alunos(self):
         return self.alunos
+    
+    def buscar_alunos(self):
+        return self.alunos
+    
+    def atualizar_aluno(self):
+        return self.alunos
 
 
 class GerenciarProfessores:
@@ -25,4 +31,10 @@ class GerenciarProfessores:
             self.professores.remove(professor)
 
     def listar_professores(self):
+        return self.professores
+    
+    def buscar_professores(self):
+        return self.professores
+    
+    def atualizar_professor(self):
         return self.professores

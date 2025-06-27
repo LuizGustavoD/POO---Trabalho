@@ -1,10 +1,10 @@
 from utils.menu_func import MenuFunc
 
 menu = MenuFunc()
+
 while True:
     menu.show_menu()
-    decision = menu.get_decision()
-    if decision == "0":
+    menu.get_decision()
+    if menu.options[int(menu.decision)][1] == "Encerrar programa":
         break
-    print("\n\n\n\n")
     menu.start_decision()
