@@ -1,17 +1,16 @@
 from datetime import datetime
-from models.pessoa import Pessoa  # Corrected import from previous issue
-from models.atividade import Atividade # Assuming Atividade class is in models/atividade.py
+from models.pessoa import Pessoa 
+from models.atividade import Atividade
 
 class Aluno(Pessoa):
-  # Removed the class attribute 'atividades = []' as it's likely not intended for instance-specific activities.
+
   def __init__(self, nome, idade, matricula, atividades):
     super().__init__(nome, idade)
-    self._atividades = atividades # Changed to _atividades for consistency (plural for a list)
+    self._atividades = atividades
     self._matricula = matricula
     self._data_cadastro = datetime.now()
 
   def __str__(self):
-    # Updated the string representation to use 'Atividades'
     return f"Aluno: {self.nome}, Idade: {self.idade}, Matrícula: {self.matricula}, Atividades: {self.atividades}, Data de Cadastro: {self.data_cadastro}"
 
   @property
@@ -30,7 +29,6 @@ class Aluno(Pessoa):
   def data_cadastro(self):
     return self._data_cadastro
 
-  # Added the getter for the 'atividades' property
   @property
   def atividades(self):
     return self._atividades
@@ -51,7 +49,6 @@ class Aluno(Pessoa):
       raise ValueError("Matrícula não pode ser vazia.")
     self._matricula = nova_matricula
 
-  # Corrected the setter to match the 'atividades' property
   @atividades.setter
   def atividades(self, novas_atividades):
     if not novas_atividades:

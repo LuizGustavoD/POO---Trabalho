@@ -4,15 +4,14 @@ from models.professor import Professor
 
 class GerenciarAlunos:
     def __init__(self):
-        self.alunos = [] # Each instance manages its own list of students
+        self.alunos = [] 
 
     def adicionar_aluno(self):
         print("\n--- ADICIONAR ALUNO ---")
         nome = input("Nome do aluno: ")
         idade = int(input("Idade do aluno: "))
-        matricula = input("Matrícula do aluno: ") # Add matricula input
-        # You might need to handle 'atividades' as well for Aluno constructor
-        # For now, let's pass an empty list if not specified
+        matricula = input("Matrícula do aluno: ") 
+
         self.alunos.append(Aluno(nome, idade, matricula, []))
         print(f"Aluno '{nome}' adicionado com sucesso!")
 
@@ -33,22 +32,20 @@ class GerenciarAlunos:
             return
         for aluno in self.alunos:
             print(aluno)
-        # return self.alunos # Return if called internally for data, otherwise print
 
-    # Other methods (buscar_alunos, atualizar_aluno) need implementation
     def buscar_alunos(self):
-        # Implementation for searching
+
         pass
 
     def atualizar_aluno(self):
-        # Implementation for updating
+
         pass
 
 
 class GerenciarProfessores:
     def __init__(self):
         self.professores = []
-        self.professor_autenticado = None # This could be shared state or managed by MenuFunc
+        self.professor_autenticado = None
 
     def adicionar_professor(self):
         print("\n--- ADICIONAR PROFESSOR ---")
@@ -75,7 +72,7 @@ class GerenciarProfessores:
             print("Nome não pode estar vazio!")
             return False
         for professor in self.professores:
-            if professor.nome.lower() == nome.lower(): # Case-insensitive comparison
+            if professor.nome.lower() == nome.lower():
                 self.professor_autenticado = professor.nome
                 print(f"Bem-vindo, professor {professor.nome}!")
                 return True
@@ -89,9 +86,7 @@ class GerenciarProfessores:
             return
         for professor in self.professores:
             print(professor)
-        # return self.professores # Return if called internally for data, otherwise print
-
-    # Other methods (buscar_professores, atualizar_professor) need implementation
+        
     def buscar_professores(self):
         # Implementation for searching
         pass

@@ -1,4 +1,4 @@
-from utils.menu_func import MenuFunc  # ajuste o caminho conforme a estrutura real do seu projeto
+from utils.menu_func import MenuFunc
 
 def main():
     menu = MenuFunc()

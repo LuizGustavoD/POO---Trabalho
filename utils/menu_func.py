@@ -1,19 +1,18 @@
-# POO---Trabalho/utils/menu_func.py
 from services.gerenciar_atividade import GerenciarAtividade
 from services.gerenciar_pessoas import GerenciarAlunos, GerenciarProfessores
 from services.gerenciar_turmas import GerenciarTurmas
-from models.atividade import Atividade # Import Atividade to use in GerenciarAtividade's methods
+from models.atividade import Atividade
 
 class MenuFunc:
     def __init__(self):
         self.decision = None
-        # Instantiate manager classes
+
         self.gerenciar_alunos = GerenciarAlunos()
         self.gerenciar_professores = GerenciarProfessores()
-        self.gerenciar_atividade = GerenciarAtividade() # Assuming it manages an internal list
-        self.gerenciar_turmas = GerenciarTurmas() # Assuming it manages an internal list
+        self.gerenciar_atividade = GerenciarAtividade()
+        self.gerenciar_turmas = GerenciarTurmas()
 
-        # Menus públicos - Update tuples to call methods on instances
+        # Menus públicos
         self.menu_publico = [
             ("Gerenciar Alunos", lambda: self.exibir_sub_menu(self.menu_aluno)),
             ("Gerenciar Professores", lambda: self.exibir_sub_menu(self.menu_professor)),
@@ -22,7 +21,7 @@ class MenuFunc:
             ("Sair", None)
         ]
 
-        # Menus internos - Update tuples to call methods on instances
+        # Menus internos
         self.menu_aluno = [
             ("Adicionar aluno", self.gerenciar_alunos.adicionar_aluno),
             ("Remover aluno", self.gerenciar_alunos.remover_aluno),
@@ -59,7 +58,7 @@ class MenuFunc:
             if opcao_func is None:
                 print("\nSaindo do sistema... Até logo!")
                 break
-            opcao_func() # Call the function directly
+            opcao_func()
 
     def exibir_menu(self, opcoes):
         for i, (titulo, _) in enumerate(opcoes):
@@ -70,7 +69,7 @@ class MenuFunc:
             self.exibir_menu(sub_opcoes)
             opcao_func = self.pegar_opcao(sub_opcoes)
             if opcao_func is None:
-                break # Go back to previous menu
+                break
             opcao_func()
 
     def pegar_opcao(self, opcoes):
@@ -84,11 +83,7 @@ class MenuFunc:
         return self.pegar_opcao(opcoes)
 
     def autenticar_menu_atividades(self):
-        # Pass the gerenciar_professores instance to verify_professor if needed,
-        # or ensure verify_professor is a class method that operates on a shared state.
-        # For simplicity here, assuming verify_professor can be called directly or is re-evaluated.
         if self.gerenciar_professores.verificar_professor():
-            # Now, instead of just displaying menu, enter a loop for activities menu
             self.exibir_sub_menu(self.menu_atividades)
         else:
             print("Acesso negado. Apenas professores autenticados podem gerenciar atividades.")

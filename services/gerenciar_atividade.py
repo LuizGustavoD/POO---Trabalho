@@ -2,17 +2,17 @@
 from models.atividade import Atividade # Import the Atividade model
 
 class GerenciarAtividade:
-    def __init__(self): # Removed 'atividade' parameter here, as it's a manager
-        self.atividades = [] # Initialize as an empty list to store Atividade objects
+    def __init__(self):
+        self.atividades = []
 
     def criar_atividade(self):
         print("\n--- CRIAR ATIVIDADE ---")
         nota = float(input("Nota da atividade: "))
         disciplina = input("Disciplina da atividade: ")
-        professor_nome = input("Nome do professor responsável: ") # You'll need to link this to actual Professor objects later
+        professor_nome = input("Nome do professor responsável: ")
         descricao = input("Descrição da atividade: ")
 
-        # Create an instance of the Atividade model
+
         nova_atividade = Atividade(nota, disciplina, professor_nome, descricao)
         self.atividades.append(nova_atividade)
         print(f"Atividade '{descricao}' criada com sucesso!")
@@ -65,6 +65,3 @@ class GerenciarAtividade:
                 print("Número de atividade inválido.")
         except ValueError:
             print("Entrada inválida. Por favor, insira um número.")
-
-    # The validar_menu_atividades method should be part of MenuFunc, not GerenciarAtividade
-    # as it deals with menu logic and authentication verification.
