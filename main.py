@@ -1,10 +1,8 @@
-from utils.menu_func import MenuFunc
+from utils.menu_func import MenuFunc  # ajuste o caminho conforme a estrutura real do seu projeto
 
-menu = MenuFunc()
+def main():
+    menu = MenuFunc()
+    menu.executar()
 
-while True:
-    menu.show_menu()
-    menu.get_decision()
-    if menu.options[int(menu.decision)][1] == "Encerrar programa":
-        break
-    menu.start_decision()
+if __name__ == "__main__":
+    main()

@@ -1,45 +1,106 @@
+# POO---Trabalho/utils/menu_func.py
 from services.gerenciar_atividade import GerenciarAtividade
 from services.gerenciar_pessoas import GerenciarAlunos, GerenciarProfessores
 from services.gerenciar_turmas import GerenciarTurmas
+from models.atividade import Atividade # Import Atividade to use in GerenciarAtividade's methods
 
 class MenuFunc:
     def __init__(self):
         self.decision = None
-        self.options = [
-            ("Criar Atividade", GerenciarAtividade.criar_atividade),
-            ("Atualizar Atividade", GerenciarAtividade.atualizar_atividade),
-            ("Excluir Atividade", GerenciarAtividade.excluir_atividade),
-            ("Adicionar Turma", GerenciarTurmas.adicionar_turma),
-            ("Remover Turma", GerenciarTurmas.remover_turma),
-            ("Listar Turmas", GerenciarTurmas.listar_turmas),
-            ("Buscar Turma", GerenciarTurmas.buscar_turma),
-            ("Cadastrar Aluno", GerenciarAlunos.adicionar_aluno),
-            ("Listar Alunos", GerenciarAlunos.listar_alunos),
-            ("Buscar Aluno", GerenciarAlunos.buscar_alunos),
-            ("Atualizar Aluno", GerenciarAlunos.atualizar_aluno),
-            ("Excluir Aluno", GerenciarAlunos.remover_aluno),
-            ("Cadastrar Professor", GerenciarProfessores.adicionar_professor),
-            ("Listar Professores", GerenciarProfessores.listar_professores),
-            ("Buscar Professor", GerenciarProfessores.buscar_professores),
-            ("Atualizar Professor", GerenciarProfessores.atualizar_professor),
-            ("Excluir Professor", GerenciarProfessores.remover_professor),
-            ("Sair", "Encerrar programa")
+        # Instantiate manager classes
+        self.gerenciar_alunos = GerenciarAlunos()
+        self.gerenciar_professores = GerenciarProfessores()
+        self.gerenciar_atividade = GerenciarAtividade() # Assuming it manages an internal list
+        self.gerenciar_turmas = GerenciarTurmas() # Assuming it manages an internal list
+
+        # Menus públicos - Update tuples to call methods on instances
+        self.menu_publico = [
+            ("Gerenciar Alunos", lambda: self.exibir_sub_menu(self.menu_aluno)),
+            ("Gerenciar Professores", lambda: self.exibir_sub_menu(self.menu_professor)),
+            ("Gerenciar Atividades (acesso restrito)", self.autenticar_menu_atividades),
+            ("Gerenciar Turmas (acesso restrito)", self.autenticar_menu_turmas),
+            ("Sair", None)
         ]
 
-    def show_menu(self):
-        print("\nMenu de Opções:")
-        for index, (label, _) in enumerate(self.options):
-            print(f"{index}. {label}")
+        # Menus internos - Update tuples to call methods on instances
+        self.menu_aluno = [
+            ("Adicionar aluno", self.gerenciar_alunos.adicionar_aluno),
+            ("Remover aluno", self.gerenciar_alunos.remover_aluno),
+            ("Listar alunos", self.gerenciar_alunos.listar_alunos),
+            ("Voltar", None)
+        ]
 
-    def get_decision(self):
-        self.decision = input("Digite sua opção: ")
-        return self.decision
+        self.menu_professor = [
+            ("Adicionar professor", self.gerenciar_professores.adicionar_professor),
+            ("Remover professor", self.gerenciar_professores.remover_professor),
+            ("Listar professores", self.gerenciar_professores.listar_professores),
+            ("Voltar", None)
+        ]
 
-    def start_decision(self):
+        self.menu_atividades = [
+            ("Criar atividade", self.gerenciar_atividade.criar_atividade),
+            ("Atualizar atividade", self.gerenciar_atividade.atualizar_atividade),
+            ("Excluir atividade", self.gerenciar_atividade.excluir_atividade),
+            ("Voltar", None)
+        ]
+
+        self.menu_turmas = [
+            ("Adicionar turma", self.gerenciar_turmas.adicionar_turma),
+            ("Remover turma", self.gerenciar_turmas.remover_turma),
+            ("Listar turmas", self.gerenciar_turmas.listar_turmas),
+            ("Voltar", None)
+        ]
+
+    def executar(self):
+        while True:
+            print("\n=== SISTEMA DE GESTÃO ESCOLAR ===")
+            self.exibir_menu(self.menu_publico)
+            opcao_func = self.pegar_opcao(self.menu_publico)
+            if opcao_func is None:
+                print("\nSaindo do sistema... Até logo!")
+                break
+            opcao_func() # Call the function directly
+
+    def exibir_menu(self, opcoes):
+        for i, (titulo, _) in enumerate(opcoes):
+            print(f"{i + 1}. {titulo}")
+
+    def exibir_sub_menu(self, sub_opcoes):
+        while True:
+            self.exibir_menu(sub_opcoes)
+            opcao_func = self.pegar_opcao(sub_opcoes)
+            if opcao_func is None:
+                break # Go back to previous menu
+            opcao_func()
+
+    def pegar_opcao(self, opcoes):
         try:
-            index = int(self.decision)
-            name, function = self.options[index]
-            if callable(function):
-                function()
-        except (ValueError, IndexError):
-            print("Opção inválida!")
+            escolha = int(input("Escolha uma opção: ")) - 1
+            if 0 <= escolha < len(opcoes):
+                return opcoes[escolha][1]
+        except ValueError:
+            pass
+        print("Opção inválida!")
+        return self.pegar_opcao(opcoes)
+
+    def autenticar_menu_atividades(self):
+        # Pass the gerenciar_professores instance to verify_professor if needed,
+        # or ensure verify_professor is a class method that operates on a shared state.
+        # For simplicity here, assuming verify_professor can be called directly or is re-evaluated.
+        if self.gerenciar_professores.verificar_professor():
+            # Now, instead of just displaying menu, enter a loop for activities menu
+            self.exibir_sub_menu(self.menu_atividades)
+        else:
+            print("Acesso negado. Apenas professores autenticados podem gerenciar atividades.")
+
+
+    def autenticar_menu_turmas(self):
+        if self.gerenciar_professores.verificar_professor():
+            self.exibir_sub_menu(self.menu_turmas)
+        else:
+            print("Acesso negado. Apenas professores autenticados podem gerenciar turmas.")
+
+
+if __name__ == "__main__":
+    sistema = MenuFunc()
+    sistema.executar()
